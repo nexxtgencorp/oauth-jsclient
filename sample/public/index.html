@@ -26,19 +26,21 @@
     </div>
     <h2>OAuth2.0</h2><h4>( Please enter the client credentials below )</h4><br>
     <form>
+        <!--
         <div class="form-group">
             <label for="clientId">ClientID</label>
-            <input type="text" class="form-control" placeholder="enter the clientId"  id="clientId" />
+            <input type="text" class="form-control" placeholder="enter the clientId"  id="clientId" value="ABFuZdxwZv0m1d83LAQ0yLK4E8S9WOwj3Ehc4EbjWBduKwrBlh" />
         </div>
         <div class="form-group">
             <label for="clientSecret">ClientSecret</label>
-            <input type="text"  class="form-control" placeholder="enter the clientSecret"  id="clientSecret" />
+            <input type="text"  class="form-control" placeholder="enter the clientSecret"  id="clientSecret" value="3zkOGoSXMtRiHRbETSGvHfwUrawmFhKQku86FZe4" />
         </div>
+        -->
         <div class="form-group">
             <label for="environment">Environment</label>
             <select id="environment" class="form-control">
-            <option value="sandbox" selected="selected">Sandbox</option>
-            <option value="production">Production</option>
+            <option value="sandbox">Sandbox</option>
+            <option value="production" selected="selected">Production</option>
             </select>
         </div>
         <div class="form-group">
@@ -53,10 +55,11 @@
     <button  type="button" id="refreshToken" class="btn btn-success">Refresh Token</button>
     <hr />
 
-    <h2>Make an API call</h2><h4>( Please refer to our <a target="_balnk" href="https://developer.intuit.com/v2/apiexplorer?apiname=V3QBO#?id=Account">API Explorer</a> )</h4>
+    <h2>Make an API call</h2><h4>( Please refer to our <a target="_blank" href="https://developer.intuit.com/v2/apiexplorer?apiname=V3QBO#?id=Account">API Explorer</a> )</h4>
     <p>If there is no access token or the access token is invalid, click either the <b>Connect to QucikBooks</b> or <b>Sign with Intuit</b> button above.</p>
     <pre id="apiCall"></pre>
     <button  type="button" id="makeAPICall" class="btn btn-success">Get Company Info</button>
+    <button  type="button" id="loadClasses" class="btn btn-success">Load Classes</button>
 
     <hr />
 
@@ -75,6 +78,7 @@
 
 <script type="text/javascript">
     (function() {
+        document.getElementById('redirectUri').setAttribute('value', window.location + 'callback');
 
         function authorizeUri() {
 
@@ -133,6 +137,12 @@
             });
         }
 
+        function loadClasses() {
+            $.post('/loadClasses', function (response) {
+                $("#apiCall").html(JSON.stringify(response, null, 4));
+            });
+        }
+
         document.getElementById('authorizeUri').addEventListener('click', function response(e) {
             e.preventDefault();
             authorizeUri();
@@ -151,6 +161,11 @@
         document.getElementById('makeAPICall').addEventListener('click', function response(e) {
             e.preventDefault();
             makeAPICall();
+        });
+
+        document.getElementById('loadClasses').addEventListener('click', function response(e) {
+            e.preventDefault();
+            loadClasses();
         });
 
     })();
